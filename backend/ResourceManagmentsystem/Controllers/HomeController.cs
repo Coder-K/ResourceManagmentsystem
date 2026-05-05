@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using ResourceManagmentsystem.Data;
 using ResourceManagmentsystem.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ResourceManagmentsystem.Controllers
 {
@@ -19,16 +20,39 @@ namespace ResourceManagmentsystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddUser(User user)
-        {
-            _context.Users.Add(user);
-            _context.SaveChanges();
-            return Ok(user);
-        }
+       public IActionResult AddUser(UserDto dto)
+{
+    var hasher = new PasswordHasher<User>();
+
+    var user = new User
+    {
+        Name = dto.Name,
+        Email = dto.Email,
+        Contact = dto.Contact,
+        AccessLevel = dto.AccessLevel
+    };
+
+    user.PasswordHash = hasher.HashPassword(user, dto.Password);
+
+    _context.Users.Add(user);
+    _context.SaveChanges();
+
+    return Ok(user);
+}
 
         [HttpGet]
         public IActionResult GetUsers()
         {
+
+            var users = _context.Users
+        .Select(u => new {
+            u.Id,
+            u.Name,
+            u.Email,
+            u.Contact,
+            u.AccessLevel
+        })
+        .ToList();
             return Ok(_context.Users.ToList());
         }
 
