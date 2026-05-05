@@ -31,6 +31,19 @@ namespace ResourceManagmentsystem.Controllers
         {
             return Ok(_context.Users.ToList());
         }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            var user = _context.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            _context.Users.Remove(user);
+            _context.SaveChanges();
+            return NoContent();
+        }
     }
 }
     
