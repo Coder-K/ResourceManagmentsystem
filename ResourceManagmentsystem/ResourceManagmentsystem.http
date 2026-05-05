@@ -1,0 +1,6 @@
+@ResourceManagmentsystem_HostAddress = http://localhost:5204
+
+GET {{ResourceManagmentsystem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
