@@ -1,6 +1,9 @@
 
 namespace ResourceManagmentsystem
 {
+    using Microsoft.EntityFrameworkCore;
+    using ResourceManagmentsystem.Data;
+
     public class Program
     {
         public static void Main(string[] args)
@@ -13,6 +16,9 @@ namespace ResourceManagmentsystem
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+             options.UseSqlite("Data Source=app.db"));
 
             var app = builder.Build();
 
