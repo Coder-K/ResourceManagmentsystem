@@ -1,7 +1,10 @@
 import reactLogo from "./assets/react.svg";
 import viteLogo from "./assets/vite.svg";
 import heroImg from "./assets/hero.png";
+import Login from "./Elemets/Login";
 import Users from "./Elemets/Users";
+import UserDetails from "./Elemets/UserDetails";
+import AddingUser from "./Elemets/AddingUser";
 import "./App.css";
 
 function App() {
@@ -13,7 +16,10 @@ function App() {
           <img src={reactLogo} className="framework" alt="React logo" />
           <img src={viteLogo} className="vite" alt="Vite logo" />
         </div>
+        {/* <Login /> */}
         <Users />
+        {/* <UserDetails /> */}
+        <AddingUser />
       </section>
     </>
   );

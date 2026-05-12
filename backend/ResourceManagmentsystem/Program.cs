@@ -1,8 +1,10 @@
-
 namespace ResourceManagmentsystem
 {
     using Microsoft.EntityFrameworkCore;
     using ResourceManagmentsystem.Data;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.IdentityModel.Tokens;
+    using System.Text;
 
     public class Program
     {
@@ -30,7 +32,35 @@ namespace ResourceManagmentsystem
                                     .AllowAnyMethod());
             });
 
+
+
+            
+
+
+            // Adding JWT authentication
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+       .AddJwtBearer(options =>
+       {
+           var key = Encoding.UTF8.GetBytes("THIS_IS_MY_SECRET_KEY_12345");
+
+           options.TokenValidationParameters = new TokenValidationParameters
+           {
+               ValidateIssuer = false,
+               ValidateAudience = false,
+               ValidateLifetime = true,
+               ValidateIssuerSigningKey = true,
+               IssuerSigningKey = new SymmetricSecurityKey(key)
+           };
+       });
+
             var app = builder.Build();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseCors("AllowReact");
 
