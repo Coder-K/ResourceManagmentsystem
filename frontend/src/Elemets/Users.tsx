@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUsers, deleteUser, updateUser } from "../Services/UserServices";
+import { getUsers, deleteUser } from "../Services/UserServices";
 import EditUserModal from "../Components/EditUserModal";
 
 function Users() {
@@ -9,14 +9,6 @@ function Users() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [showSearchPopup, setShowSearchPopup] = useState(false);
-
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    contact: "",
-    password: "",
-    accessLevel: 0,
-  });
 
   useEffect(() => {
     getUsers().then((data) => setUsers(data));
@@ -34,24 +26,12 @@ function Users() {
     setUsers(users.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
   };
 
-  const handleChange = (e: any) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   const handleDeleteUser = (id: number) => {
     deleteUser(id).then(() => {
       setUsers(users.filter((u) => u.id !== id));
     });
   };
 
-  const handleUpdateUser = (id: number) => {
-    updateUser(id, formData).then((data) => {
-      setUsers(users.map((u) => (u.id === id ? data : u)));
-    });
-  };
   const popupStyle = {
     position: "fixed" as const,
     top: "20%",
@@ -92,6 +72,7 @@ function Users() {
         {users.map((u: any) => (
           <li key={u.id}>
             {u.name}"/"
+            {u.surname}"/"
             {u.contact}"/"
             {u.email}"/"
             {u.accessLevel}

@@ -1,25 +1,36 @@
 import { useState, useEffect } from "react";
-import { addUser, updateUser } from "../Services/UserServices";
+import { addUser } from "../Services/UserServices";
 
 function AddingUser() {
   const [users, setUsers] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     name: "",
+    surname: "",
     email: "",
     contact: "",
-    password: "",
+    passwordhash: "",
     AccessLevel: 0,
   });
 
   const handleAddUser = () => {
+    if (!emailValid) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
+    if (!contactValid) {
+      alert("Contact number must be exactly 10 digits");
+      return;
+    }
     addUser(formData)
       .then((data) => {
         setUsers([...users, data]);
         setFormData({
           name: "",
+          surname: "",
           email: "",
           contact: "",
-          password: "",
+          passwordhash: "",
           AccessLevel: 0,
         });
       })
@@ -33,11 +44,8 @@ function AddingUser() {
     });
   };
 
-  const handleUpdateUser = (id: number) => {
-    updateUser(id, formData).then((data) => {
-      setUsers(users.map((u) => (u.id === id ? data : u)));
-    });
-  };
+  const emailValid = /\S+@\S+\.\S+/.test(formData.email);
+  const contactValid = /^\d{10}$/.test(formData.contact);
 
   return (
     <div>
@@ -51,6 +59,15 @@ function AddingUser() {
             placeholder="Enter name"
           />
         </li>
+        <li>
+          <input
+            name="surname"
+            value={formData.surname}
+            onChange={handleChange}
+            placeholder="Enter surname"
+          />
+        </li>
+
         <li>
           <input
             name="email"
@@ -69,8 +86,9 @@ function AddingUser() {
         </li>
         <li>
           <input
-            name="password"
-            value={formData.password}
+            type="password"
+            name="passwordhash"
+            value={formData.passwordhash}
             onChange={handleChange}
             placeholder="Enter password"
           />
@@ -86,7 +104,6 @@ function AddingUser() {
             placeholder="Enter access level"
           />
         </li>
-
         <button onClick={handleAddUser}>Add User</button>
       </ul>
     </div>

@@ -6,6 +6,7 @@ function UserDetails() {
   const [formData, setFormData] = useState({
     id: 0,
     name: "",
+    surname: "",
     email: "",
     contact: "",
     accessLevel: 0,
@@ -47,6 +48,12 @@ function UserDetails() {
         value={formData.name}
         onChange={handleChange}
         placeholder={formData.name}
+      />
+      <input
+        name="surname"
+        value={formData.surname}
+        onChange={handleChange}
+        placeholder={formData.surname}
       />
       <input
         name="email"

@@ -33,12 +33,13 @@ namespace ResourceManagmentsystem.Controllers
             var user = new User
             {
                 Name = dto.Name,
+                Surname = dto.Surname,
                 Email = dto.Email,
                 Contact = dto.Contact,
                 AccessLevel = dto.AccessLevel
             };
 
-            user.PasswordHash = hasher.HashPassword(user, dto.Password);
+            user.PasswordHash = hasher.HashPassword(user, dto.PasswordHash);
 
             _context.Users.Add(user);
             _context.SaveChanges();
@@ -100,6 +101,7 @@ namespace ResourceManagmentsystem.Controllers
         {
             u.Id,
             u.Name,
+            u.Surname,
             u.Email,
             u.Contact,
             u.AccessLevel
@@ -137,13 +139,14 @@ namespace ResourceManagmentsystem.Controllers
             }
 
             user.Name = dto.Name;
+            user.Surname = dto.Surname;
             user.Email = dto.Email;
             user.Contact = dto.Contact;
             user.AccessLevel = dto.AccessLevel;
-            if (!string.IsNullOrEmpty(dto.Password))
+            if (!string.IsNullOrEmpty(dto.PasswordHash))
             {
                 var hasher = new PasswordHasher<User>();
-                user.PasswordHash = hasher.HashPassword(user, dto.Password);
+                user.PasswordHash = hasher.HashPassword(user, dto.PasswordHash);
             }
             _context.Users.Update(user);
             _context.SaveChanges();
@@ -165,6 +168,7 @@ namespace ResourceManagmentsystem.Controllers
             {
                 user.Id,
                 user.Name,
+                user.Surname,
                 user.Email,
                 user.Contact,
                 user.AccessLevel

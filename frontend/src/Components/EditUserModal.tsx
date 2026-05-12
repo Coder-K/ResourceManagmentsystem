@@ -10,9 +10,10 @@ type Props = {
 function EditUserModal({ user, onClose, onUserUpdated }: Props) {
   const [formData, setFormData] = useState({
     name: "",
+    surname: "",
     email: "",
     contact: "",
-    password: "",
+    passwordhash: "",
     accessLevel: 0,
   });
 
@@ -21,9 +22,10 @@ function EditUserModal({ user, onClose, onUserUpdated }: Props) {
     if (user) {
       setFormData({
         name: user.name,
+        surname: user.surname,
         email: user.email,
         contact: user.contact,
-        password: "",
+        passwordhash: "",
         accessLevel: user.accessLevel,
       });
     }
@@ -37,11 +39,39 @@ function EditUserModal({ user, onClose, onUserUpdated }: Props) {
   };
 
   const handleSubmit = () => {
+    if (!emailValid) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
+    if (!contactValid) {
+      alert("Contact number must be exactly 10 digits");
+      return;
+    }
+    if (formData.passwordhash == null || formData.passwordhash.trim() === "") {
+      alert("Please enter a valid password");
+      return;
+    }
+
     updateUser(user.id, formData).then((data) => {
       onUserUpdated(data);
       onClose();
     });
   };
+
+  const modalStyle = {
+    position: "fixed" as const,
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    background: "white",
+    padding: "20px",
+    border: "1px solid black",
+    zIndex: 1000,
+  };
+
+  const emailValid = /\S+@\S+\.\S+/.test(formData.email);
+  const contactValid = /^\d{10}$/.test(formData.contact);
 
   return (
     <div style={modalStyle}>
@@ -55,11 +85,19 @@ function EditUserModal({ user, onClose, onUserUpdated }: Props) {
       />
 
       <input
+        name="surname"
+        value={formData.surname}
+        onChange={handleChange}
+        placeholder="Enter surname"
+      />
+
+      <input
         name="email"
         value={formData.email}
         onChange={handleChange}
         placeholder="Email"
       />
+      {!emailValid && <p style={{ color: "red" }}>Invalid email format</p>}
 
       <input
         name="contact"
@@ -67,15 +105,19 @@ function EditUserModal({ user, onClose, onUserUpdated }: Props) {
         onChange={handleChange}
         placeholder="Contact"
       />
+      {!contactValid && (
+        <p style={{ color: "red" }}>Contact number must be exactly 10 digits</p>
+      )}
 
       <input
         type="password"
-        name="password"
-        value={formData.password}
+        name="passwordhash"
+        value={formData.passwordhash}
         onChange={handleChange}
         placeholder="New Password"
       />
 
+      <br />
       <label>Access Level:</label>
       <input
         type="number"
@@ -95,16 +137,5 @@ function EditUserModal({ user, onClose, onUserUpdated }: Props) {
     </div>
   );
 }
-
-const modalStyle = {
-  position: "fixed" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  background: "white",
-  padding: "20px",
-  border: "1px solid black",
-  zIndex: 1000,
-};
 
 export default EditUserModal;
