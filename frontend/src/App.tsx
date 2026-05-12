@@ -4,6 +4,7 @@ import heroImg from "./assets/hero.png";
 import Login from "./Elemets/Login";
 import Users from "./Elemets/Users";
 import UserDetails from "./Elemets/UserDetails";
+import AddingUser from "./Elemets/AddingUser";
 import "./App.css";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         {/* <Login /> */}
         <Users />
         {/* <UserDetails /> */}
+        <AddingUser />
       </section>
     </>
   );

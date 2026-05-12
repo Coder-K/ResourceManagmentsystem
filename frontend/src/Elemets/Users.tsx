@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import {
-  getUsers,
-  addUser,
-  deleteUser,
-  updateUser,
-} from "../Services/UserServices";
+import { getUsers, deleteUser, updateUser } from "../Services/UserServices";
+import EditUserModal from "../Components/EditUserModal";
 
 function Users() {
   const [users, setUsers] = useState<any[]>([]);
+  const [selectedUser, setSelectedUser] = useState<any | null>(null);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [showSearchPopup, setShowSearchPopup] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -17,29 +18,26 @@ function Users() {
     accessLevel: 0,
   });
 
-  // const [name, setName] = useState("");
-
   useEffect(() => {
     getUsers().then((data) => setUsers(data));
   }, []);
+
+  const filteredUsers = users.filter((u) =>
+    u.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
+
+  const openEditModal = (user: any) => {
+    setSelectedUser(user);
+  };
+
+  const handleUserUpdated = (updatedUser: any) => {
+    setUsers(users.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+  };
 
   const handleChange = (e: any) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleAddUser = (d: any) => {
-    addUser(d).then((data) => {
-      setUsers([...users, data]);
-      setFormData({
-        name: "",
-        email: "",
-        contact: "",
-        password: "",
-        accessLevel: 0,
-      });
     });
   };
 
@@ -54,56 +52,42 @@ function Users() {
       setUsers(users.map((u) => (u.id === id ? data : u)));
     });
   };
+  const popupStyle = {
+    position: "fixed" as const,
+    top: "20%",
+    right: "20px",
+    background: "white",
+    border: "1px solid black",
+    padding: "10px",
+    zIndex: 1000,
+  };
+
   return (
     <div>
-      <h3>New User Details</h3>
-      <ul>
-        <li>
-          <input
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Enter name"
-          />
-        </li>
-        <li>
-          <input
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Enter email"
-          />
-        </li>
-        <li>
-          <input
-            name="contact"
-            value={formData.contact}
-            onChange={handleChange}
-            placeholder="Enter contact"
-          />
-        </li>
-        <li>
-          <input
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Enter password"
-          />
-        </li>
-        <li>
-          <input
-            name="accessLevel"
-            type="number"
-            max={3}
-            min={0}
-            value={formData.accessLevel}
-            onChange={handleChange}
-            placeholder="Enter access level"
-          />
-        </li>
+      <h3> Users Details</h3>
 
-        <button onClick={handleAddUser}>Add User</button>
-      </ul>
+      <input
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          setShowSearchPopup(true);
+        }}
+        placeholder="Search users..."
+      />
+
+      {showSearchPopup && searchTerm && (
+        <div style={popupStyle}>
+          {filteredUsers.map((u: any) => (
+            <div key={u.id}>
+              {u.name} - {u.email}
+              <button onClick={() => openEditModal(u)}>Edit</button>
+            </div>
+          ))}
+
+          <button onClick={() => setShowSearchPopup(false)}>Close</button>
+        </div>
+      )}
+
       <ul>
         {users.map((u: any) => (
           <li key={u.id}>
@@ -112,7 +96,14 @@ function Users() {
             {u.email}"/"
             {u.accessLevel}
             <button onClick={() => handleDeleteUser(u.id)}>Delete</button>
-            <button onClick={() => handleUpdateUser(u.id)}>Update</button>
+            <button onClick={() => openEditModal(u)}>Edit</button>
+            {selectedUser && (
+              <EditUserModal
+                user={selectedUser}
+                onClose={() => setSelectedUser(null)}
+                onUserUpdated={handleUserUpdated}
+              />
+            )}
           </li>
         ))}
       </ul>

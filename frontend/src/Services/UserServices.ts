@@ -16,10 +16,10 @@ export const getUserById = async (id: number) => {
 export const addUser = async (user: { name: string }) => {
   const res = await fetch(BASE_URL, {
     method: "POST",
-    // headers: {
-    //   "Content-Type": "application/json",
-    // },
-    // body: JSON.stringify(user),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
   });
 
   return res.json();

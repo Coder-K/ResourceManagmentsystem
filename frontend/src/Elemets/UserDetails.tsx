@@ -3,29 +3,74 @@ import { getUserById, updateUser } from "../Services/UserServices";
 
 function UserDetails() {
   const [user, setUser] = useState<any[]>([]);
-  const [name, setName] = useState("");
-
+  const [formData, setFormData] = useState({
+    id: 0,
+    name: "",
+    email: "",
+    contact: "",
+    accessLevel: 0,
+  });
   useEffect(() => {
     getUserById(1).then((data) => setUser([data]));
   }, []);
 
   const handleUpdateUser = (id: number) => {
-    updateUser(id, { name }).then((data) => {
+    updateUser(id, formData).then((data) => {
       setUser(user.map((u) => (u.id === id ? data : u)));
     });
   };
 
+  const handleChange = (e: any) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handlegetUserById = (id: number) => {
+    getUserById(id).then((data) => setUser([data]));
+  };
+
   return (
     <div>
-      <ul>
-        <li>{user[0]?.name}</li>
-      </ul>
       <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder={user[0]?.name || "Detail not found"}
+        name="id"
+        value={formData.id}
+        onChange={handleChange}
+        placeholder="Enter user id"
       />
-      <button onClick={() => handleUpdateUser(1)}>Update User</button>
+      <button onClick={() => handlegetUserById(formData.id)}>Get User</button>
+
+      <h3>User Details</h3>
+      <input
+        name="name"
+        value={formData.name}
+        onChange={handleChange}
+        placeholder={formData.name}
+      />
+      <input
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder={formData.email}
+      />
+      <input
+        name="contact"
+        value={formData.contact}
+        onChange={handleChange}
+        placeholder={formData.contact}
+      />
+
+      <input
+        name="accessLevel"
+        type="number"
+        max={3}
+        min={0}
+        value={formData.accessLevel}
+        onChange={handleChange}
+        placeholder={formData.accessLevel.toString()}
+      />
+      {/* <button onClick={() => handleUpdateUser(1)}>Update User</button> */}
     </div>
   );
 }
