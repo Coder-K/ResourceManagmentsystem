@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { updateUser } from "../Services/UserServices";
+import "./ComStyle.css";
 
 type Props = {
   user: any;
@@ -59,81 +60,74 @@ function EditUserModal({ user, onClose, onUserUpdated }: Props) {
     });
   };
 
-  const modalStyle = {
-    position: "fixed" as const,
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    background: "white",
-    padding: "20px",
-    border: "1px solid black",
-    zIndex: 1000,
-  };
-
   const emailValid = /\S+@\S+\.\S+/.test(formData.email);
   const contactValid = /^\d{10}$/.test(formData.contact);
 
   return (
-    <div style={modalStyle}>
-      <h2>Edit User</h2>
+    <div className="overlay">
+      <div className="modalStyle">
+        <h2>Edit User</h2>
 
-      <input
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        placeholder="Name"
-      />
+        <input
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          placeholder="Name"
+        />
 
-      <input
-        name="surname"
-        value={formData.surname}
-        onChange={handleChange}
-        placeholder="Enter surname"
-      />
+        <input
+          name="surname"
+          value={formData.surname}
+          onChange={handleChange}
+          placeholder="Enter surname"
+        />
 
-      <input
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        placeholder="Email"
-      />
-      {!emailValid && <p style={{ color: "red" }}>Invalid email format</p>}
+        <input
+          name="contact"
+          value={formData.contact}
+          onChange={handleChange}
+          placeholder="Contact"
+        />
+        {!contactValid && (
+          <p style={{ color: "red" }}>
+            Contact number must be exactly 10 digits
+          </p>
+        )}
 
-      <input
-        name="contact"
-        value={formData.contact}
-        onChange={handleChange}
-        placeholder="Contact"
-      />
-      {!contactValid && (
-        <p style={{ color: "red" }}>Contact number must be exactly 10 digits</p>
-      )}
+        <input
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          placeholder="Email"
+        />
+        {!emailValid && <p style={{ color: "red" }}>Invalid email format</p>}
 
-      <input
-        type="password"
-        name="passwordhash"
-        value={formData.passwordhash}
-        onChange={handleChange}
-        placeholder="New Password"
-      />
+        <input
+          type="password"
+          name="passwordhash"
+          value={formData.passwordhash}
+          onChange={handleChange}
+          placeholder="New Password"
+        />
 
-      <br />
-      <label>Access Level:</label>
-      <input
-        type="number"
-        name="accessLevel"
-        min={0}
-        max={3}
-        value={formData.accessLevel}
-        onChange={handleChange}
-        placeholder="Access Level"
-      />
+        <br />
+        <label>Access Level:</label>
+        <input
+          type="number"
+          name="accessLevel"
+          min={0}
+          max={3}
+          value={formData.accessLevel}
+          onChange={handleChange}
+          placeholder="Access Level"
+        />
 
-      <br />
+        <br />
 
-      <button onClick={handleSubmit}>Save Changes</button>
+        <button onClick={handleSubmit}>Save Changes</button>
 
-      <button onClick={onClose}>Cancel</button>
+        <button onClick={onClose}>Cancel</button>
+      </div>
     </div>
   );
 }

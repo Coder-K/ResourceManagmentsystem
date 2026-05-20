@@ -167,7 +167,7 @@
 
   &::before,
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     top: -4.5px;
     border: 5px solid transparent;
@@ -181,4 +181,83 @@
     right: 0;
     border-right-color: var(--border);
   }
+}
+
+/* Additional styles for the app can be added here */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+/* Table styles */
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.userTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+}
+
+.userTable th {
+  background-color: #f4f4f4;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #ccc;
+}
+
+.userTable td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.userTable tr:hover {
+  background-color: #f9f9f9;
+}
+
+.userTable button {
+  padding: 6px 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.userTable button:hover {
+  opacity: 0.8;
+}
+
+.popupStyle {
+  position: fixed;
+  top: 20%;
+  right: 20px;
+  background: white;
+  border: 1px solid black;
+  padding: 10px;
+  z-index: 1000;
+}
+
+input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
