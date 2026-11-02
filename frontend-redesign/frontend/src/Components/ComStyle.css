@@ -1,0 +1,74 @@
+/* Side navigation: a floating frosted-glass panel (still a side nav, still toggled by the ☰ button
+   on small screens, always visible on wide screens). Same markup as before. */
+.menuButton {
+  position: fixed; top: 16px; left: 16px; z-index: 1100;
+  background: rgba(22, 22, 36, 0.6); color: #fff; padding: 8px 16px;
+  border: 1px solid var(--line-strong); border-radius: var(--pill);
+  font-size: 20px; line-height: 1.2; cursor: pointer;
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.menuButton:hover { background: rgba(255, 255, 255, 0.14); }
+
+.sidebar {
+  position: fixed; top: 14px; bottom: 14px; left: -300px; width: 252px; z-index: 1000;
+  display: flex; flex-direction: column; color: #fff; overflow-y: auto;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04)), var(--sidebar);
+  border: 1px solid var(--line-strong); border-radius: 24px;
+  -webkit-backdrop-filter: blur(26px) saturate(170%); backdrop-filter: blur(26px) saturate(170%);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: left 0.3s ease;
+}
+.sidebar.open { left: 14px; }
+
+.logoSection { padding: 22px 20px 18px; text-align: center; }
+.logoSection h2 {
+  margin: 0; font-size: 1.5rem; font-weight: 700; letter-spacing: 0.14em;
+  background: linear-gradient(135deg, #ffffff, #c4b5fd); -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.userSection {
+  display: flex; align-items: center; gap: 12px; margin: 0 14px; padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line); border-radius: 16px;
+}
+.userIcon {
+  display: grid; place-items: center; flex: none; width: 38px; height: 38px; font-size: 18px;
+  border-radius: 50%; background: rgba(139, 108, 255, 0.22); border: 1px solid rgba(167, 139, 250, 0.4);
+}
+.userName { font-weight: 600; line-height: 1.2; }
+.userRole { font-size: 0.8rem; color: #b9b9d0; }
+
+.navLinks { display: flex; flex-direction: column; gap: 4px; margin: 18px 0 0; padding: 0 14px; flex: 1; }
+.navItem {
+  padding: 11px 14px; text-decoration: none; color: #cfcfe2; border-radius: 14px;
+  border: 1px solid transparent; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+.navItem:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+.navItem.active {
+  color: #fff; font-weight: 500;
+  background: linear-gradient(135deg, rgba(139, 108, 255, 0.38), rgba(109, 76, 240, 0.2));
+  border-color: rgba(167, 139, 250, 0.45);
+  box-shadow: 0 4px 18px rgba(109, 76, 240, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+.signOut {
+  margin: 16px 14px 14px; padding: 10px; font: inherit; cursor: pointer; color: #fff;
+  background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line-strong); border-radius: var(--pill);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.signOut:hover { background: rgba(255, 255, 255, 0.13); border-color: rgba(255, 255, 255, 0.32); }
+
+.mainContent { padding: 70px 20px 4rem; max-width: 1150px; margin: 0 auto; }
+
+/* Opaque-ish fallback when backdrop-filter is unavailable, so nav text stays readable */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .sidebar { background: #15151f; }
+  .menuButton { background: #15151f; }
+}
+
+@media (min-width: 900px) {
+  .menuButton { display: none; }
+  .sidebar { left: 14px; }
+  .mainContent { margin: 0 auto 0 280px; padding: 28px 28px 4rem; }
+}
