@@ -2,25 +2,41 @@
 
 namespace ResourceManagmentsystem.Models
 {
-    public class UserDto
+    /// <summary>Shared validation rules.</summary>
+    public static class Rules
     {
+        // 10 to 15 digits, optional leading + (accepts 0821234567 and +27821234567)
+        public const string Phone = @"^\+?\d{10,15}$";
+    }
 
-        [Required]
-        public string Name { get; set; } = string.Empty;
+    /// <summary>What the API sends back about a user. Never contains the password or its hash.</summary>
+    public record UserDto(int Id, string Name, string Surname, string Email, string Contact,
+                          AccessLevel AccessLevel, bool IsActive, DateTime CreatedUtc);
 
-        [Required]
-        public string Surname { get; set; } = string.Empty;
+    public record CreateUserDto(
+        [Required, StringLength(100, MinimumLength = 1)] string Name,
+        [Required, StringLength(100, MinimumLength = 1)] string Surname,
+        [Required, EmailAddress, MaxLength(254)] string Email,
+        [Required, RegularExpression(Rules.Phone, ErrorMessage = "Invalid contact number format.")] string Contact,
+        [Required, MaxLength(128)] string Password,
+        [EnumDataType(typeof(AccessLevel))] AccessLevel? AccessLevel);
 
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; } = string.Empty;
+    public record UpdateUserDto(
+        [Required, StringLength(100, MinimumLength = 1)] string Name,
+        [Required, StringLength(100, MinimumLength = 1)] string Surname,
+        [Required, EmailAddress, MaxLength(254)] string Email,
+        [Required, RegularExpression(Rules.Phone, ErrorMessage = "Invalid contact number format.")] string Contact,
+        [EnumDataType(typeof(AccessLevel))] AccessLevel? AccessLevel,
+        bool? IsActive,
+        [MaxLength(128)] string? NewPassword);
 
-        [Required]
-        [RegularExpression(@"^\d{10}$", ErrorMessage = "Invalid contact number format.")]
-        public string Contact { get; set; } = string.Empty;
+    public record ChangePasswordDto(
+        [Required, MaxLength(128)] string CurrentPassword,
+        [Required, MaxLength(128)] string NewPassword);
 
-        [Required]
-        public string PasswordHash { get; set; } = string.Empty;
-        public int AccessLevel { get; set; }
+    public static class Mapping
+    {
+        public static UserDto ToDto(User u) =>
+            new(u.Id, u.Name, u.Surname, u.Email, u.Contact, u.AccessLevel, u.IsActive, u.CreatedUtc);
     }
 }

@@ -1,0 +1,107 @@
+/* Page layout and page-specific styles: glass cards, rows, stats, table, login */
+.pageHead { margin-bottom: 1.5rem; }
+.split { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+.stack { display: flex; flex-direction: column; gap: 1.25rem; }
+.narrow { max-width: 560px; }
+.twoCol { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form { display: flex; flex-direction: column; gap: 1rem; }
+.inline { display: flex; gap: 0.5rem; }
+.checks { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem 0.75rem; }
+.search { margin-bottom: 1rem; max-width: 360px; }
+
+/* ---------- glass card ---------- */
+.panel {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--line); border-radius: var(--radius-lg);
+  padding: 1.35rem 1.5rem; box-shadow: var(--shadow);
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+}
+
+/* ---------- dashboard stats ---------- */
+.stats {
+  display: flex; flex-wrap: wrap; margin: 0 0 1.25rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow);
+  -webkit-backdrop-filter: var(--blur); backdrop-filter: var(--blur);
+}
+.stats > div { flex: 1 1 140px; padding: 1.1rem 1.4rem; border-right: 1px solid var(--line); }
+.stats > div:last-child { border-right: 0; }
+.stats dt { color: var(--muted); font-size: 0.82rem; }
+.stats dd { margin: 0.1rem 0 0; font-size: 1.85rem; font-weight: 600; letter-spacing: -0.02em; }
+
+/* ---------- project rows ---------- */
+.rows, .plain { list-style: none; margin: 0; padding: 0; }
+.row {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.03); border: 1px solid var(--line); border-radius: 16px;
+  margin-bottom: 0.7rem; transition: background 0.2s ease, border-color 0.2s ease;
+}
+.row:hover { background: rgba(255, 255, 255, 0.065); border-color: var(--line-strong); }
+.row.selected {
+  background: rgba(139, 108, 255, 0.13); border-color: rgba(167, 139, 250, 0.6);
+  box-shadow: inset 3px 0 0 var(--accent), 0 0 24px rgba(139, 108, 255, 0.15);
+}
+.rowMain { flex: 1; text-align: left; background: none; border: 0; padding: 0.85rem 1rem; font: inherit; color: inherit; cursor: pointer; display: grid; gap: 0.5rem; border-radius: 16px; }
+.rowTitle { font-weight: 500; }
+.rowMeta { display: flex; gap: 0.75rem; align-items: center; font-size: 0.85rem; }
+.flag {
+  background: rgba(252, 211, 77, 0.14); color: var(--amber); border: 1px solid rgba(252, 211, 77, 0.4);
+  font-size: 0.7rem; font-weight: 600; padding: 0.08rem 0.55rem; border-radius: var(--pill);
+  margin-right: 0.55rem; letter-spacing: 0.03em; text-transform: uppercase;
+}
+.plain li { padding: 0.35rem 0; }
+
+/* Segmented progress bar, drawn as 20 blocks. The gaps are cut with a mask (not painted in a
+   colour), so they stay see-through on any glass surface. The empty track is clearly visible. */
+.meterRow { display: flex; align-items: center; gap: 0.7rem; }
+.meter {
+  position: relative; flex: 1; height: 10px; border-radius: var(--pill); overflow: hidden;
+  background: rgba(255, 255, 255, 0.16);
+  -webkit-mask-image: repeating-linear-gradient(90deg, #000 0, #000 calc(5% - 3px), transparent calc(5% - 3px), transparent 5%);
+          mask-image: repeating-linear-gradient(90deg, #000 0, #000 calc(5% - 3px), transparent calc(5% - 3px), transparent 5%);
+}
+.meterFill { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #7a5cff, #c4b5fd); }
+.pct { width: 3.4ch; text-align: right; font-variant-numeric: tabular-nums; font-size: 0.85rem; font-weight: 500; color: var(--ink); }
+
+.facts { display: grid; grid-template-columns: max-content 1fr; gap: 0.5rem 1.1rem; margin: 1.1rem 0 0; }
+.facts dt { color: var(--muted); }
+.facts dd { margin: 0; }
+
+/* ---------- users table ---------- */
+.tableContainer { overflow-x: auto; }
+.userTable { width: 100%; border-collapse: collapse; }
+.userTable th, .userTable td { text-align: left; padding: 0.7rem 0.75rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
+.userTable th { font-size: 0.74rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+.userTable tbody tr:last-child td { border-bottom: 0; }
+.userTable tr:hover td { background: rgba(255, 255, 255, 0.04); }
+.userTable .actions { display: flex; align-items: center; gap: 0.5rem; }
+
+/* ---------- login (stand-alone page, no sidebar) ---------- */
+.loginWrap { min-height: 100vh; display: grid; place-items: center; padding: 1rem; }
+.loginCard {
+  width: 100%; max-width: 400px; padding: 2.25rem; border-radius: 24px;
+  display: flex; flex-direction: column; gap: 1.1rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6), 0 0 80px rgba(139, 108, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(24px) saturate(160%); backdrop-filter: blur(24px) saturate(160%);
+}
+.loginCard h1 {
+  letter-spacing: 0.08em; font-weight: 700;
+  background: linear-gradient(135deg, #ffffff, #c4b5fd); -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; width: fit-content;
+}
+.loginCard .alert { margin: 0; }
+.loginCard .btn { padding: 0.7rem 1.15rem; }
+
+/* If a browser has no backdrop-filter, make the glass more opaque so text stays readable */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .panel, .stats, .loginCard { background: #14141f; }
+}
+
+@media (max-width: 860px) {
+  .grid2, .twoCol, .checks { grid-template-columns: 1fr; }
+  .stats > div { border-right: 0; border-bottom: 1px solid var(--line); }
+  .stats > div:last-child { border-bottom: 0; }
+}
