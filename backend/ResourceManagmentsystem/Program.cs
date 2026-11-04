@@ -56,10 +56,12 @@ namespace ResourceManagmentsystem
              options.UseSqlite(builder.Configuration.GetConnectionString("Default") ?? "Data Source=app.db"));
 
             //react allows any origin to access the api
+            var origins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+            
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowReact",
-                    policy => policy.WithOrigins("http://localhost:5173")
+                    policy => policy.WithOrigins(origins)
                                     .WithHeaders("Authorization", "Content-Type")
                                     .WithMethods("GET", "POST", "PUT", "DELETE"));
             });

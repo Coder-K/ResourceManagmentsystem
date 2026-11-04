@@ -2,7 +2,11 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { AuthContext } from "./AuthContext";
 import { setUnauthorizedHandler, tokenStore } from "../Services/ApiClient";
-import { getMe, login as loginRequest, logout as logoutRequest } from "../Services/AuthServices";
+import {
+  getMe,
+  login as loginRequest,
+  logout as logoutRequest,
+} from "../Services/AuthServices";
 import type { User } from "../Types";
 
 const HEARTBEAT_MS = 10 * 60 * 1000; // while the user is active, ping the API at most every 10 minutes
@@ -23,7 +27,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // 1. On first load, validate a token left in sessionStorage (e.g. after a page refresh).
   useEffect(() => {
-    setUnauthorizedHandler(() => clearSession("Your session expired. Please sign in again."));
+    setUnauthorizedHandler(() =>
+      clearSession("Your session expired. Please sign in again."),
+    );
     if (!tokenStore.get()) return;
     idleMinutes.current = tokenStore.idleMinutes();
     getMe()
@@ -49,7 +55,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     };
     const events = ["mousemove", "keydown", "click", "scroll", "touchstart"];
-    events.forEach((e) => window.addEventListener(e, onActivity, { passive: true }));
+    events.forEach((e) =>
+      window.addEventListener(e, onActivity, { passive: true }),
+    );
 
     const timer = setInterval(() => {
       if (Date.now() - lastActivity.current > idleMinutes.current * 60 * 1000) {
@@ -65,8 +73,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string) => {
     const res = await loginRequest(email, password);
-    tokenStore.set(res.token, res.idleTimeoutMinutes);
-    idleMinutes.current = res.idleTimeoutMinutes;
+    tokenStore.set(res.token, res.idleTime);
+    idleMinutes.current = res.idleTime;
     setNotice("");
     setUser(res.user);
   };
@@ -81,7 +89,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, ready, notice, login, logout, updateUser: setUser }}>
+    <AuthContext.Provider
+      value={{ user, ready, notice, login, logout, updateUser: setUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
