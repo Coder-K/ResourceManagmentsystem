@@ -4,7 +4,11 @@
 export type AccessLevel = 0 | 1 | 2;
 export const ALL_LEVELS: AccessLevel[] = [0, 1, 2];
 export const STAFF_LEVELS: AccessLevel[] = [1, 2]; // Manager + Admin
-export const ACCESS_LABEL: Record<AccessLevel, string> = { 0: "Normal user", 1: "Manager", 2: "Admin" };
+export const ACCESS_LABEL: Record<AccessLevel, string> = {
+  0: "Normal user",
+  1: "Manager",
+  2: "Admin",
+};
 
 export type ProjectStatus = "Planning" | "Active" | "OnHold" | "Completed";
 export const STATUS_LABEL: Record<ProjectStatus, string> = {
@@ -17,7 +21,8 @@ export const STATUSES = Object.keys(STATUS_LABEL) as ProjectStatus[];
 
 export const PASSWORD_HINT =
   "At least 10 characters, with upper and lower case letters, a number and a symbol.";
-export const CONTACT_HINT = "10 to 15 digits, optional leading + (for example 0821234567).";
+export const CONTACT_HINT =
+  "10 to 15 digits, optional leading + (for example 0821234567).";
 export const CONTACT_REGEX = /^\+?\d{10,15}$/;
 
 export interface User {
@@ -33,8 +38,8 @@ export interface User {
 
 export interface LoginResponse {
   token: string;
-  expiresUtc: string;
-  idleTimeoutMinutes: number;
+  expire: string;
+  idleTime: number;
   user: User;
 }
 
@@ -65,7 +70,7 @@ export interface Member {
 export interface TempAccess {
   userId: number;
   fullName: string;
-  expiresUtc: string;
+  expire: string;
 }
 
 export type AccessType = "Full" | "Assigned" | "Temporary" | "ViewOnly";
@@ -81,7 +86,7 @@ export interface Project {
   updatedUtc: string;
   canEdit: boolean;
   accessType: AccessType;
-  accessExpiresUtc: string | null;
+  accessexpire: string | null;
   members: Member[];
   temporaryAccess: TempAccess[];
 }

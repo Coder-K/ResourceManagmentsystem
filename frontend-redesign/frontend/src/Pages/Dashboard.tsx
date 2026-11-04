@@ -38,14 +38,23 @@ function Dashboard() {
     }
   };
 
-  if (!data) return error ? <Alert>{error}</Alert> : <p className="muted">Loading dashboard…</p>;
+  if (!data)
+    return error ? (
+      <Alert>{error}</Alert>
+    ) : (
+      <p className="muted">Loading dashboard…</p>
+    );
   const selected = data.projects.find((p) => p.id === selectedId);
 
   return (
     <>
       <div className="pageHead">
         <h1>Dashboard</h1>
-        <p className="muted">{isStaff ? "Every project that is still in progress." : "Projects you are part of."}</p>
+        <p className="muted">
+          {isStaff
+            ? "Every project that is still in progress."
+            : "Projects you are part of."}
+        </p>
       </div>
       <Alert>{error}</Alert>
 
@@ -60,7 +69,9 @@ function Dashboard() {
         </div>
         <div>
           <dt>Overdue</dt>
-          <dd className={data.overdueProjects ? "bad" : ""}>{data.overdueProjects}</dd>
+          <dd className={data.overdueProjects ? "bad" : ""}>
+            {data.overdueProjects}
+          </dd>
         </div>
         <div>
           <dt>Completed</dt>
@@ -73,13 +84,23 @@ function Dashboard() {
           <h2>In progress</h2>
           {data.projects.length === 0 ? (
             <p className="muted">
-              Nothing in progress. {isStaff ? "Projects appear here once an admin creates them." : "Ask a manager to add you to a project."}
+              Nothing in progress.{" "}
+              {isStaff
+                ? "Projects appear here once an admin creates them."
+                : "Ask a manager to add you to a project."}
             </p>
           ) : (
             <ul className="rows">
               {data.projects.map((p) => (
-                <li key={p.id} className={p.id === selectedId ? "row selected" : "row"}>
-                  <button className="rowMain" onClick={() => setSelectedId(p.id)} aria-pressed={p.id === selectedId}>
+                <li
+                  key={p.id}
+                  className={p.id === selectedId ? "row selected" : "row"}
+                >
+                  <button
+                    className="rowMain"
+                    onClick={() => setSelectedId(p.id)}
+                    aria-pressed={p.id === selectedId}
+                  >
                     <span className="rowTitle">
                       {p.isPriority && <span className="flag">Priority</span>}
                       {p.name}
@@ -87,11 +108,16 @@ function Dashboard() {
                     <ProgressBar value={p.progressPercent} />
                     <span className="rowMeta">
                       <StatusBadge status={p.status} />
-                      <span className={isOverdue(p) ? "bad" : "muted"}>Due {fmtDate(p.dueDate)}</span>
+                      <span className={isOverdue(p) ? "bad" : "muted"}>
+                        Due {fmtDate(p.dueDate)}
+                      </span>
                     </span>
                   </button>
                   {isStaff && (
-                    <button className="btn btnGhost" onClick={() => togglePriority(p.id, p.isPriority)}>
+                    <button
+                      className="btn btnGhost"
+                      onClick={() => togglePriority(p.id, p.isPriority)}
+                    >
                       {p.isPriority ? "Remove priority" : "Set priority"}
                     </button>
                   )}
@@ -105,7 +131,11 @@ function Dashboard() {
           {selected ? (
             <>
               <h2>{selected.name}</h2>
-              <p>{selected.description || <span className="muted">No description.</span>}</p>
+              <p>
+                {selected.description || (
+                  <span className="muted">No description.</span>
+                )}
+              </p>
               <dl className="facts">
                 <dt>Status</dt>
                 <dd>{STATUS_LABEL[selected.status]}</dd>
@@ -116,17 +146,25 @@ function Dashboard() {
                 <dt>Last update</dt>
                 <dd>{fmtDate(selected.updatedUtc)}</dd>
                 <dt>Team</dt>
-                <dd>{selected.members.map((m) => m.fullName).join(", ") || "Nobody assigned"}</dd>
-                {selected.accessType === "Temporary" && selected.accessExpiresUtc && (
-                  <>
-                    <dt>Your access</dt>
-                    <dd>Temporary, {timeLeft(selected.accessExpiresUtc)}</dd>
-                  </>
-                )}
+                <dd>
+                  {selected.members.map((m) => m.fullName).join(", ") ||
+                    "Nobody assigned"}
+                </dd>
+                {selected.accessType === "Temporary" &&
+                  selected.accessexpire && (
+                    <>
+                      <dt>Your access</dt>
+                      <dd>Temporary, {timeLeft(selected.accessexpire)}</dd>
+                    </>
+                  )}
                 {isStaff && selected.temporaryAccess.length > 0 && (
                   <>
                     <dt>Temporary access</dt>
-                    <dd>{selected.temporaryAccess.map((t) => `${t.fullName} (${timeLeft(t.expiresUtc)})`).join(", ")}</dd>
+                    <dd>
+                      {selected.temporaryAccess
+                        .map((t) => `${t.fullName} (${timeLeft(t.expire)})`)
+                        .join(", ")}
+                    </dd>
                   </>
                 )}
               </dl>

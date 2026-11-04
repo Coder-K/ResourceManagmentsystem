@@ -2,7 +2,7 @@
 // It adds the JWT, turns API errors into readable messages, and signs the user out on any 401.
 
 const BASE_URL: string =
-  import.meta.env.VITE_API_URL ?? "http://localhost:44372/api";
+  import.meta.env.VITE_API_URL ?? "https://localhost:44372/api";
 
 const TOKEN_KEY = "rms_token";
 const IDLE_KEY = "rms_idle_minutes";

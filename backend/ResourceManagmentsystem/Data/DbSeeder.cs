@@ -33,8 +33,7 @@ namespace ResourceManagmentsystem.Data
             var demoPw = cfg["Seed:DemoPassword"] ?? "Demo#Pass2026!";
             var manager = await GetOrAdd(db, passwords, "Morgan", "Manager", "managerTest@rms.local", "0821112222", demoPw, AccessLevel.Manager);
             var alice = await GetOrAdd(db, passwords, "Alice", "Coder", "onlyOther@rms.local", "0823334444", demoPw, AccessLevel.Normal);
-            var bob = await GetOrAdd(db, passwords, "Bob", "Developer", "bob@rms.local", "0825556666", demoPw, AccessLevel.Normal);
-
+           
             var now = DateTime.UtcNow;
             Project P(string n, string d, ProjectStatus s, int pct, bool pri, int dueDays, params User[] members) => new()
             {
@@ -43,10 +42,7 @@ namespace ResourceManagmentsystem.Data
             };
 
             db.Projects.AddRange(
-                P("Payments API Rewrite", "Move the payment endpoints to the new gateway and add idempotency keys.", ProjectStatus.Active, 65, true, 21, alice, manager),
-                P("Mobile App Refresh", "New navigation, offline mode and accessibility fixes.", ProjectStatus.Active, 30, false, 45, bob),
-                P("Data Pipeline Migration", "Port nightly batch jobs to the streaming platform.", ProjectStatus.Planning, 0, false, 90, alice, bob),
-                P("Internal Tooling", "Retired the legacy admin scripts.", ProjectStatus.Completed, 100, false, -10, bob));
+                P("Payments API Rewrite", "Move the payment endpoints to the new gateway and add idempotency keys.", ProjectStatus.Active, 65, true, 21, alice, manager));
             await db.SaveChangesAsync();
             logger.LogInformation("Seeded demo users and projects");
         }

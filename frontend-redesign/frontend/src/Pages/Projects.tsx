@@ -121,8 +121,8 @@ function Projects() {
                     <span className="rowMeta">
                       <StatusBadge status={p.status} />
                       <span className="muted">
-                        {p.accessType === "Temporary" && p.accessExpiresUtc
-                          ? `Temporary, ${timeLeft(p.accessExpiresUtc)}`
+                        {p.accessType === "Temporary" && p.accessexpire
+                          ? `Temporary, ${timeLeft(p.accessexpire)}`
                           : p.accessType === "ViewOnly"
                             ? "View only"
                             : "You can edit"}
@@ -335,9 +335,9 @@ function Editor({
         {readOnly && (
           <Alert type="info">You can view this project but not edit it.</Alert>
         )}
-        {project.accessType === "Temporary" && project.accessExpiresUtc && (
+        {project.accessType === "Temporary" && project.accessexpire && (
           <Alert type="info">
-            Temporary access: {timeLeft(project.accessExpiresUtc)}.
+            Temporary access: {timeLeft(project.accessexpire)}.
           </Alert>
         )}
 
@@ -345,7 +345,7 @@ function Editor({
           Name
           <input
             value={form.name}
-            disabled={!isAdmin || isStaff}
+            disabled={!isAdmin}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
           />
         </label>
@@ -381,7 +381,7 @@ function Editor({
             <input
               type="date"
               value={form.dueDate}
-              disabled={!isAdmin || isStaff}
+              disabled={!isAdmin}
               onChange={(e) => setForm({ ...form, dueDate: e.target.value })}
             />
           </label>
@@ -451,7 +451,7 @@ function Editor({
                 <li key={t.userId} className="split">
                   <span>
                     {t.fullName}{" "}
-                    <span className="muted">({timeLeft(t.expiresUtc)})</span>
+                    <span className="muted">({timeLeft(t.expire)})</span>
                   </span>
                   <button
                     className="btn btnGhost"
