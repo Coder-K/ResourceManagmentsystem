@@ -11,9 +11,9 @@ system you can skip to the technical break down section.
 
 Please not the breakdown and the details below and mostly based on the
 end product and there will be no build instructions, deployment
-instructions or notes on how to make and or run the project yourself.
+instructions or detailed notes on how to make and or run the project locally.
 (the details of this file and the project are subject to change as a
-results of future update to project\*)
+result of future updates to the project\*)
 
 # RMS BREAKDOWN
 
